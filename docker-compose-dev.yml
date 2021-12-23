@@ -1,0 +1,33 @@
+version: "3.7"
+services:
+  rest-api:
+    container_name: rest-api
+    restart: unless-stopped
+    env_file: ./config/${ENV}.env
+    environment:
+      - NODE_ENV=development
+      - PORT=5001
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./
+    ports:
+      - "5001:5001"
+    depends_on:
+      - db
+    volumes:
+      - ./:/home/node/api
+      - /home/node/api/node_modules
+  db:
+    image: postgres:13-alpine
+    restart: always
+    environment:
+      - POSTGRES_DB=helen
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+volumes:
+  pg-data:
+    driver: local

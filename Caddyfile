@@ -1,0 +1,7 @@
+rest-api.capstone.civdev.rocks {
+
+    reverse_proxy rest-api:5001 {
+
+        header_down Strict-Transport-Security max-age=31536000;
+    }
+}
